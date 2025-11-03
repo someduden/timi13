@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tími 13</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 24px;
+        line-height: 1.4;
+      }
+      section {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 16px;
+        margin: 12px 0;
+      }
+      h2 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      button {
+        cursor: pointer;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        background: #fafafa;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #f3f3f3;
+        font-size: 12px;
+      }
+      .hidden {
+        display: none;
+      }
+      .tabs [data-tab] {
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        border-radius: 8px 8px 0 0;
+        background: #f7f7f7;
+        cursor: pointer;
+      }
+      .tabpanel {
+        border: 1px solid #ccc;
+        border-radius: 0 8px 8px 8px;
+        padding: 10px;
+      }
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        width: min(90vw, 420px);
+      }
+      ul {
+        padding-left: 18px;
+      }
+      .color-box {
+        width: 120px;
+        height: 80px;
+        border: 1px solid #ccc;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>DOM Æfingar</h1>
+    <section>
+      <h3>Æfing 1: Sýna/Fela texta</h3>
+      <div>
+        <button id="toggleBtn" onclick="showHide()">Sýna/fela</button>
+        <p id="aefing1">Halló DOM æfing</p>
+      </div>
+
+      <script>
+        function showHide() {
+          aefing1.classList.toggle("hidden");
+        }
+      </script>
+    </section>
+
+    <section>
+      <h3>Æfing 2: Stafir eftir (teljum stafi)</h3>
+      <div>
+        <input
+          id="limitInput"
+          maxlength="20"
+          type="text"
+          placeholder="Hámark 20 stafir"
+        />
+        <span id="lettersLeft" class="pill">20 stafir eftir</span>
+      </div>
+
+      <script>
+        const maxLen = 20;
+        limitInput.addEventListener("input", () => {
+          lettersLeft.textContent =
+            maxLen - limitInput.value.length + " stafir eftir";
+        });
+      </script>
+    </section>
+
+    <section>
+      <h3>Æfing 3: Filtera lista (mini search)</h3>
+      <input id="filterIn" placeholder="Leita..." />
+      <ul id="names">
+        <li>Daníel</li>
+        <li>Anna</li>
+        <li>Björn</li>
+        <li>Dagur</li>
+        <li>Elín</li>
+        <li>Inga</li>
+      </ul>
+
+      <script>
+        filterIn.addEventListener("input", () => {
+          const searchValue = filterIn.value.toLowerCase();
+          names.querySelectorAll("li").forEach((listaItem) => {
+            listaItem.style.display = listaItem.textContent
+              .toLowerCase()
+              .includes(searchValue)
+              ? ""
+              : "none";
+          });
+        });
+      </script>
+    </section>
+
+    <section>
+      <h3>Æfing 4: Breyta textalit</h3>
+      <p id="colorTxt">Þessi texti breytir um lit!</p>
+      <button id="txtColorBtn" onclick="changeColor()">Breyta textalit</button>
+
+      <!-- Breyta textalit með onlick="changeColor()" -->
+      <script>
+        const textColors = ["red", "blue", "pink", "purple", "green", "yellow"];
+        function changeColor() {
+          const colorText = document.getElementById("colorTxt");
+          colorTxt.style.color =
+            textColors[Math.floor(Math.random() * textColors.length)];
+        }
+      </script>
+      <!-- Breyta textalit með EventListener -->
+      <script>
+        const textColorsEvent = [
+          "red",
+          "blue",
+          "pink",
+          "purple",
+          "green",
+          "yellow",
+        ];
+        txtColorBtn.addEventListener("click", () => {
+          colorTxt.style.color =
+            textColors[Math.floor(Math.random() * textColors.length)];
+        });
+      </script>
+    </section>
+
+    <section>
+      <h3>Æfing 5: Breyta um texta stærð</h3>
+      <p id="sizeText">Stækkar og minnkar með hverju smelli!</p>
+      <button onclick="decreaseSize()">Minnka letur stærð</button>
+      <button onclick="increaseSize()">Stækkar letur stærð</button>
+
+      <script>
+        const texti = document.getElementById("sizeText");
+
+        function decreaseSize() {
+          const currentSize =
+            parseFloat(getComputedStyle(texti).fontSize) || 16;
+          texti.style.fontSize = Math.max(8, currentSize - 1) + "px";
+        }
+        function increaseSize() {
+          const currentSize =
+            parseFloat(getComputedStyle(texti).fontSize) || 16;
+          texti.style.fontSize = Math.max(8, currentSize + 1) + "px";
+        }
+      </script>
+    </section>
+
+    <section>
+      <h3>Æfing 6: Slá inn bakgrunnslit</h3>
+      <input id="userColor" placeholder="Sláið inn lit t.d red" />
+      <button id="applyColor" onclick="changeColor()">Nota lit</button>
+      <div id="userBox" class="color-box"></div>
+
+      <script>
+        function changeColor() {
+          const color = document.getElementById("userColor").value;
+          document.getElementById("userBox").style.backgroundColor = color;
+        }
+      </script>
+    </section>
+
+    <section>
+      <h3>Æfing 7: Breyta lit eftir músahreyfingu</h3>
+      <div
+        id="moveBox"
+        class="color-box"
+        onmousemove="mouseMove(event)"
+        onmouseleave="removeBackground()"
+        onclick="setColor()"
+      ></div>
+      <p>Farðu með músina yfir kassan</p>
+
+      <script>
+        let isSet = false;
+
+        function mouseMove(e) {
+          const r = e.offsetX;
+          const g = e.offsetY;
+          const b = 150;
+          if (!isSet) {
+            e.target.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+          }
+        }
+
+        function removeBackground() {
+          if (!isSet) {
+            document.getElementById("moveBox").style.background = "";
+          }
+        }
+
+        function setColor() {
+          isSet = !isSet;
+        }
+      </script>
+    </section>
+  </body>
+</html>
